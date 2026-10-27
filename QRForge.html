@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100b20">
+  <title>QRForge — QR Code Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#100b20;--panel:rgba(31,24,53,.85);--purple:#a78bfa;--text:#f8f7ff;--muted:#aaa3c0;--border:rgba(255,255,255,.1)}
+    *{margin:0;padding:0;box-sizing:border-box}body{min-height:100vh;font-family:Inter,sans-serif;color:var(--text);background:radial-gradient(ellipse at 15% 10%,#34205c 0,transparent 38%),radial-gradient(ellipse at 90% 90%,#261749 0,transparent 35%),var(--bg);padding:28px 18px 45px}button,input,select,textarea{font:inherit}button{cursor:pointer}.container{max-width:1050px;margin:auto}
+    header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:42px}.brand{display:flex;align-items:center;gap:12px}.logo{width:47px;height:47px;border-radius:15px;background:linear-gradient(135deg,#c4b5fd,#7c3aed);display:grid;place-items:center;color:white;font-size:25px;font-weight:800;box-shadow:0 8px 30px #8b5cf644}.brand h1{font-size:23px;letter-spacing:-1px}.brand h1 span{color:var(--purple)}.brand p{font-size:11px;color:var(--muted);margin-top:4px}.badge{border:1px solid #a78bfa55;color:#c4b5fd;background:#8b5cf618;padding:9px 13px;border-radius:30px;font-size:12px}
+    .hero{text-align:center;margin-bottom:35px}.eyebrow{display:inline-block;color:#c4b5fd;background:#8b5cf61b;border:1px solid #a78bfa35;border-radius:25px;padding:8px 14px;font-size:12px;margin-bottom:18px}.hero h2{font-size:clamp(32px,5vw,53px);line-height:1.15;letter-spacing:-2px;margin-bottom:15px}.hero h2 span{background:linear-gradient(90deg,#c4b5fd,#8b5cf6,#e9d5ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:570px;margin:auto;line-height:1.8;font-size:14px}
+    .workspace{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}.panel{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:25px;box-shadow:0 20px 65px #0002;backdrop-filter:blur(20px);min-width:0}.panel-title{font-size:18px;font-weight:700;margin-bottom:7px}.panel-subtitle{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px}.types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:25px}.type-btn{min-width:0;border:1px solid var(--border);background:#ffffff05;color:#bdb5d0;border-radius:12px;padding:13px 4px;transition:.2s;font-size:11px}.type-btn .type-icon{display:block;font-size:21px;margin-bottom:8px}.type-btn.active{background:#8b5cf623;border-color:var(--purple);color:#e9ddff}
+    .field{margin-bottom:18px}.field label{display:block;color:#e6e0f5;font-size:12px;font-weight:600;margin-bottom:9px}.field input,.field textarea,.field select{width:100%;color:white;background:#100b20aa;border:1px solid var(--border);border-radius:11px;padding:13px 14px;outline:none;transition:.2s;font-size:13px}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--purple);box-shadow:0 0 0 3px #a78bfa17}.field textarea{min-height:105px;resize:vertical;line-height:1.6}.field select option{background:#1f1835;color:white}.hint{color:var(--muted);font-size:11px;margin-top:7px;line-height:1.5}.two-columns,.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.primary-btn,.download-btn{border:0;border-radius:12px;padding:14px 18px;color:white;font-weight:700;font-size:13px;background:linear-gradient(120deg,#8b5cf6,#6d28d9);box-shadow:0 8px 24px #7c3aed30;transition:transform .2s,opacity .2s}.primary-btn:hover,.download-btn:hover{transform:translateY(-2px)}.primary-btn,.download-btn{width:100%}.primary-btn{margin-top:6px}.preview-panel{text-align:center;position:sticky;top:20px}.preview-heading{text-align:left}.qr-stage{background:radial-gradient(ellipse at center,#a78bfa10,transparent 70%),#130e25;border:1px dashed #a78bfa42;border-radius:18px;min-height:295px;display:flex;justify-content:center;align-items:center;padding:22px;margin:18px 0;overflow:hidden}.qr-placeholder{max-width:220px;color:var(--muted);font-size:12px;line-height:1.8}.big-icon{font-size:55px;margin-bottom:15px;display:block;opacity:.8}#qrcode{display:flex;justify-content:center;align-items:center;padding:12px;background:white;border-radius:8px;max-width:100%}#qrcode canvas,#qrcode img{display:block;max-width:100%;height:auto}.qr-info{display:none;text-align:left;background:#ffffff06;border:1px solid var(--border);padding:14px;border-radius:12px;margin-bottom:15px}.qr-info strong{display:block;font-size:12px;margin-bottom:5px}.qr-info span{color:var(--muted);font-size:11px;overflow-wrap:anywhere;line-height:1.6}.download-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}.secondary-btn{width:100%;background:transparent;border:1px solid var(--border);color:#d8cef0;border-radius:12px;padding:12px;font-size:12px;margin-top:10px}.status{font-size:12px;color:#c4b5fd;min-height:20px;margin-top:12px;line-height:1.6}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}.feature{background:#ffffff05;border:1px solid var(--border);border-radius:15px;padding:18px}.feature span{font-size:22px}.feature h3{font-size:12px;margin:11px 0 7px}.feature p{font-size:11px;line-height:1.7;color:var(--muted)}footer{text-align:center;color:#847b9c;font-size:11px;margin-top:35px;line-height:1.8}
+    @media(max-width:760px){body{padding:20px 13px 35px}header{margin-bottom:32px}.workspace{grid-template-columns:1fr}.preview-panel{position:static}.hero h2{letter-spacing:-1.5px}.panel{padding:19px}.features{grid-template-columns:1fr}}@media(max-width:400px){.badge{display:none}.types{gap:5px}.type-btn{font-size:10px}.two-columns{grid-template-columns:1fr;gap:0}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <header><div class="brand"><div class="logo">Q</div><div><h1>QR<span>Forge</span></h1><p>CREATE. SCAN. CONNECT.</p></div></div><div class="badge">✦ Free QR Studio</div></header>
+  <section class="hero"><div class="eyebrow">✦ Your all-in-one QR toolkit</div><h2>Turn anything into a<br><span>QR code.</span></h2><p>Create QR codes for links, text, Wi-Fi networks, and contacts in seconds. Customize the colors, preview your design, and download it as a PNG.</p></section>
+  <main class="workspace">
+    <section class="panel"><h3 class="panel-title">Create your QR code</h3><p class="panel-subtitle">Choose a QR type and enter the information you want to share.</p>
+      <div class="types"><button class="type-btn active" data-type="text" type="button"><span class="type-icon">✎</span>Text</button><button class="type-btn" data-type="url" type="button"><span class="type-icon">↗</span>Website</button><button class="type-btn" data-type="wifi" type="button"><span class="type-icon">⌁</span>Wi-Fi</button><button class="type-btn" data-type="contact" type="button"><span class="type-icon">♙</span>Contact</button></div>
+      <form id="qrForm">
+        <div id="textFields"><div class="field"><label for="textInput">Your text</label><textarea id="textInput" placeholder="Enter a message, note, or any text..."></textarea></div></div>
+        <div id="urlFields" hidden><div class="field"><label for="urlInput">Website URL</label><input id="urlInput" type="url" placeholder="https://example.com"><p class="hint">Include https:// for the most reliable results.</p></div></div>
+        <div id="wifiFields" hidden><div class="field"><label for="wifiName">Wi-Fi network name (SSID)</label><input id="wifiName" type="text" placeholder="My Wi-Fi"></div><div class="field"><label for="wifiPassword">Wi-Fi password</label><input id="wifiPassword" type="password" placeholder="Enter Wi-Fi password"></div><div class="field"><label for="wifiSecurity">Security type</label><select id="wifiSecurity"><option value="WPA">WPA/WPA2/WPA3</option><option value="WEP">WEP</option><option value="nopass">No password (Open)</option></select></div><label style="display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:18px;color:#c9c1dc"><input id="wifiHidden" type="checkbox" style="accent-color:#a78bfa">Hidden network</label></div>
+        <div id="contactFields" hidden><div class="field"><label for="contactName">Full name *</label><input id="contactName" type="text" placeholder="Sam Wilson"></div><div class="two-columns"><div class="field"><label for="contactPhone">Phone number</label><input id="contactPhone" type="tel" placeholder="+91 9876543210"></div><div class="field"><label for="contactEmail">Email address</label><input id="contactEmail" type="email" placeholder="sam@example.com"></div></div><div class="field"><label for="contactOrg">Organization</label><input id="contactOrg" type="text" placeholder="Company or college"></div><div class="field"><label for="contactUrl">Website</label><input id="contactUrl" type="url" placeholder="https://example.com"></div></div>
+        <div class="options"><div class="field"><label for="qrColor">QR color</label><input id="qrColor" type="color" value="#6d28d9" style="height:45px;padding:5px"></div><div class="field"><label for="qrSize">Image size</label><select id="qrSize"><option value="200">200 × 200</option><option value="300" selected>300 × 300</option><option value="400">400 × 400</option><option value="600">600 × 600</option></select></div></div>
+        <button class="primary-btn" type="submit">✦ Generate QR Code</button>
+      </form>
+    </section>
+    <section class="panel preview-panel"><div class="preview-heading"><h3 class="panel-title">Live preview</h3><p class="panel-subtitle">Your generated QR code will appear here.</p></div><div class="qr-stage"><div class="qr-placeholder" id="placeholder"><span class="big-icon">▦</span><strong style="display:block;color:#ddd3f3;margin-bottom:8px">Your QR code awaits</strong>Enter your content and click Generate QR Code to create your code.</div><div id="qrcode" hidden></div></div><div class="qr-info" id="qrInfo"><strong>✓ QR code generated</strong><span id="qrDescription"></span></div><button class="download-btn" id="downloadBtn" type="button" disabled>↓ Download PNG</button><button class="secondary-btn" id="resetBtn" type="button">↺ Reset generator</button><div class="status" id="status" role="status" aria-live="polite"></div></section>
+  </main>
+  <section class="features"><div class="feature"><span>⚡</span><h3>Instant generation</h3><p>Create QR codes quickly with a simple and easy-to-use interface.</p></div><div class="feature"><span>🎨</span><h3>Custom colors</h3><p>Choose your QR code color and image size to suit your needs.</p></div><div class="feature"><span>⬇</span><h3>PNG downloads</h3><p>Save your generated QR code as an image for sharing or printing.</p></div></section>
+  <footer><p>QRForge © 2026 · Made for simple, smarter sharing.</p><p>Your content is processed in your browser. Avoid encoding sensitive information in QR codes.</p></footer>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  let currentType = "text", generated = false;
+  const typeButtons = document.querySelectorAll(".type-btn");
+  const fieldGroups = {text:$("textFields"),url:$("urlFields"),wifi:$("wifiFields"),contact:$("contactFields")};
+  typeButtons.forEach(button => button.addEventListener("click", () => {
+    currentType = button.dataset.type;
+    typeButtons.forEach(btn => btn.classList.toggle("active", btn === button));
+    Object.entries(fieldGroups).forEach(([type,group]) => group.hidden = type !== currentType);
+    clearGenerated(); $("status").textContent = "";
+  }));
+  function clearGenerated() {
+    generated = false; $("qrcode").replaceChildren(); $("qrcode").hidden = true;
+    $("placeholder").hidden = false; $("qrInfo").style.display = "none"; $("downloadBtn").disabled = true;
+  }
+  function escapeWifi(value) { return value.replace(/([\\;,:"'])/g, "\\$1"); }
+  function getPayload() {
+    switch(currentType) {
+      case "text": { const text=$("textInput").value.trim(); if(!text) throw Error("Please enter some text."); return text; }
+      case "url": {
+        const raw=$("urlInput").value.trim(); if(!raw) throw Error("Please enter a website URL.");
+        let url; try { url=new URL(raw); } catch { throw Error("Please enter a valid URL, including https://."); }
+        if(!["http:","https:"].includes(url.protocol)) throw Error("Only HTTP and HTTPS website URLs are supported.");
+        return url.href;
+      }
+      case "wifi": {
+        const name=$("wifiName").value, password=$("wifiPassword").value, security=$("wifiSecurity").value, hidden=$("wifiHidden").checked;
+        if(!name.trim()) throw Error("Please enter the Wi-Fi network name.");
+        if(security!=="nopass"&&!password) throw Error("Please enter the Wi-Fi password.");
+        return `WIFI:T:${security};S:${escapeWifi(name)};P:${security==="nopass"?"":escapeWifi(password)};H:${hidden?"true":"false"};;`;
+      }
+      case "contact": {
+        const name=$("contactName").value.trim(), phone=$("contactPhone").value.trim(), email=$("contactEmail").value.trim(), org=$("contactOrg").value.trim(), website=$("contactUrl").value.trim();
+        if(!name) throw Error("Please enter the contact's name.");
+        if(!phone&&!email&&!org&&!website) throw Error("Please add at least one contact detail.");
+        if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw Error("Please enter a valid contact email.");
+        let validWebsite="";
+        if(website){let parsed;try{parsed=new URL(website)}catch{throw Error("Please enter a valid contact website URL.")}if(!["http:","https:"].includes(parsed.protocol))throw Error("The contact website must use HTTP or HTTPS.");validWebsite=parsed.href;}
+        const esc=value=>value.replace(/\\/g,"\\\\").replace(/\r?\n/g,"\\n").replace(/;/g,"\\;").replace(/,/g,"\\,");
+        return ["BEGIN:VCARD","VERSION:3.0",`FN:${esc(name)}`,...(phone?[`TEL;TYPE=CELL:${esc(phone)}`]:[]),...(email?[`EMAIL:${esc(email)}`]:[]),...(org?[`ORG:${esc(org)}`]:[]),...(validWebsite?[`URL:${esc(validWebsite)}`]:[]),"END:VCARD"].join("\r\n");
+      }
+    }
+  }
+  $("qrForm").addEventListener("submit", event => {
+    event.preventDefault(); clearGenerated(); $("status").textContent="";
+    let payload; try{payload=getPayload()}catch(error){$("status").textContent="⚠ "+error.message;return}
+    if(typeof QRCode==="undefined"){$("status").textContent="⚠ QR library could not load. Check your internet connection and reload.";return}
+    const size=Number($("qrSize").value), color=$("qrColor").value;
+    $("placeholder").hidden=true; $("qrcode").hidden=false;
+    try {
+      new QRCode($("qrcode"),{text:payload,width:size,height:size,colorDark:color,colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      generated=true; $("downloadBtn").disabled=false; $("qrInfo").style.display="block";
+      $("qrDescription").textContent=({text:"Text QR code",url:"Website QR code",wifi:"Wi-Fi connection QR code",contact:"Contact vCard QR code"})[currentType]+" · "+size+" × "+size+" px";
+      $("status").textContent="✓ QR code created successfully! Scan it to test your content.";
+    } catch(error){clearGenerated();$("status").textContent="⚠ Could not generate the QR code. Try shorter content."}
+  });
+  $("downloadBtn").addEventListener("click",()=>{
+    if(!generated||!$("qrcode").children.length)return;
+    const canvas=$("qrcode").querySelector("canvas"), img=$("qrcode").querySelector("img");
+    let sourceCanvas=canvas;
+    if(!sourceCanvas&&img&&img.complete&&img.naturalWidth){sourceCanvas=document.createElement("canvas");sourceCanvas.width=img.naturalWidth;sourceCanvas.height=img.naturalHeight;sourceCanvas.getContext("2d").drawImage(img,0,0)}
+    if(!sourceCanvas){$("status").textContent="⚠ QR image is not ready yet. Try again.";return}
+    const link=document.createElement("a");link.download="QRForge-"+currentType+".png";link.href=sourceCanvas.toDataURL("image/png");link.click();$("status").textContent="✓ PNG download started!";
+  });
+  $("resetBtn").addEventListener("click",()=>{
+    $("qrForm").reset();currentType="text";typeButtons.forEach(button=>button.classList.toggle("active",button.dataset.type==="text"));
+    Object.entries(fieldGroups).forEach(([type,group])=>group.hidden=type!=="text");
+    clearGenerated();$("qrColor").value="#6d28d9";$("qrSize").value="300";$("status").textContent="Generator reset. Ready for a new QR code.";
+  });
+</script>
+</body>
+</html>
